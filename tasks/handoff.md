@@ -12,10 +12,10 @@ Newest entry on top. Each entry is a snapshot so the next session starts with fu
 1. Get class data verified on non-rogue characters via `/rrt check` (see `tasks/todo.md`).
 2. To ship a new version: bump `## Version:` in the toc, `make package`, commit the zip, create a GitHub release (human keystroke).
 
-**Needs Brian (you):** run `/rrt check` on any alts; decide whether to remove the RRTProbe link.
+**Needs Brian (you):** run `/rrt check` on any alts.
 
 **Can be done autonomously:** data fixes from `/rrt check` output, more Logic tests.
 
 **Blockers:** none.
 
-**Open questions:** add a license (none chosen yet)?
+**Open questions:** none. MIT license added; probe addon uninstalled (code kept in `spike/` as evidence).

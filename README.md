@@ -96,3 +96,7 @@ make package   # build release/ReagentTracker-<version>.zip
 
 `ReagentTracker/Data.lua` holds the per-class lists, `Logic.lua` decides what to show (fully unit
 tested in `tests/`), and `Core.lua` talks to the game. The design is in `docs/superpowers/specs/`.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
