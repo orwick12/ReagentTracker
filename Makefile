@@ -4,7 +4,7 @@ WOW_ADDONS ?= /Applications/World of Warcraft/_forever_/Interface/AddOns
 ADDON      := ReagentTracker
 VERSION    := $(shell sed -n 's/^\#\# Version: *//p' $(ADDON)/$(ADDON).toc)
 
-.PHONY: help test lint check verify install uninstall package
+.PHONY: help test lint check verify install uninstall package release
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "%-10s %s\n", $$1, $$2}'
@@ -26,7 +26,12 @@ uninstall: ## Remove that link (only if it is a symlink)
 	@if [ -L "$(WOW_ADDONS)/$(ADDON)" ]; then rm "$(WOW_ADDONS)/$(ADDON)" && echo removed; else echo "not a symlink, left alone"; fi
 
 package: check ## Build release/ReagentTracker-<version>.zip (the installable addon)
-	@mkdir -p release
+	@rm -rf build && mkdir -p "build/$(ADDON)" release
+	cp $(ADDON)/*.toc $(ADDON)/*.lua LICENSE "build/$(ADDON)/"
 	@rm -f "release/$(ADDON)-$(VERSION).zip"
-	zip -qrX "release/$(ADDON)-$(VERSION).zip" $(ADDON) -x '*.DS_Store'
+	cd build && zip -qrX "../release/$(ADDON)-$(VERSION).zip" $(ADDON)
+	@rm -rf build
 	@unzip -l "release/$(ADDON)-$(VERSION).zip"
+
+release: ## HUMAN ONLY: package, commit, tag v<version>, push, publish GitHub release
+	scripts/release.sh

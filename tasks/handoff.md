@@ -10,7 +10,7 @@ Newest entry on top. Each entry is a snapshot so the next session starts with fu
 
 **Next steps (high level):**
 1. Get class data verified on non-rogue characters via `/rrt check` (see `tasks/todo.md`).
-2. To ship a new version: bump `## Version:` in the toc, `make package`, commit the zip, create a GitHub release (human keystroke).
+2. To ship a new version: bump `## Version:` in the toc, commit + push, run `make release` (human keystroke).
 
 **Needs Brian (you):** run `/rrt check` on any alts.
 

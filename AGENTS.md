@@ -23,7 +23,13 @@ project, and it is the canonical instructions for every agent. Keep it flat: no 
   `docs/superpowers/plans/2026-11-19-reagent-tracker.md`.
 
 `make help` lists every target. `make install` links the addon into the local WoW AddOns folder
-and `make package` builds the release zip; publishing a GitHub release stays a human keystroke.
+and `make package` builds the release zip (addon files + LICENSE).
+
+**`make release` is a human keystroke — agents never run it.** It ships: it runs
+`scripts/release.sh`, which refuses unless on a clean `main` in sync with `origin` and with an
+unused tag, then packages, commits the zip, tags `v<version>`, pushes, and publishes the GitHub
+release. To ship: bump `## Version:` in `ReagentTracker/ReagentTracker.toc`, commit, push,
+`make release` (optional `NOTES="..."` for release notes).
 
 ## Where things live
 

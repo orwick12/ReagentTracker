@@ -92,7 +92,13 @@ Requires [LuaJIT](https://luajit.org/) (`brew install luajit`) and `make`.
 make check     # syntax check + test suite (the gate)
 make install   # symlink ReagentTracker/ into the local WoW Forever AddOns folder
 make package   # build release/ReagentTracker-<version>.zip
+make release   # publish: bump '## Version:' in the .toc, commit + push, then run this
 ```
+
+`make release` refuses to run unless you're on a clean `main` that matches GitHub and the version
+hasn't been released yet. It then builds the zip, commits it, tags `v<version>`, pushes, and
+creates the GitHub release with the zip attached. Needs the [GitHub CLI](https://cli.github.com/)
+(`gh`), logged in.
 
 `ReagentTracker/Data.lua` holds the per-class lists, `Logic.lua` decides what to show (fully unit
 tested in `tests/`), and `Core.lua` talks to the game. The design is in `docs/superpowers/specs/`.
