@@ -69,6 +69,35 @@ function Logic.ItemLine(entry, snapshot)
   return { key = entry.key, label = label, value = tostring(count), color = Logic.ColorForCount(count, entry.low) }
 end
 
+-- Weapon buff thresholds (spec): red < 5 min or < 5 charges; yellow < 10 min or < 20 charges.
+local MIN = 60000
+local RED_MS, YELLOW_MS = 5 * MIN, 10 * MIN
+local RED_CHARGES, YELLOW_CHARGES = 5, 20
+local SEVERITY = { white = 0, yellow = 1, red = 2 }
+
+local function worst(a, b) return SEVERITY[b] > SEVERITY[a] and b or a end
+
+function Logic.FormatTime(ms)
+  if ms >= MIN then return math.floor(ms / MIN) .. "m" end
+  return math.floor(ms / 1000) .. "s"
+end
+
+function Logic.WeaponLine(entry, weapon, data)
+  if not (weapon and weapon.equipped) then return nil end
+  local b = weapon.buff
+  if not b then return { key = entry.key, label = entry.label, value = "NO BUFF", color = "red" } end
+
+  local ms, charges = b.remainingMs or 0, b.charges or 0
+  local color = ms < RED_MS and "red" or (ms < YELLOW_MS and "yellow" or "white")
+  local value = Logic.FormatTime(ms)
+  if charges > 0 then
+    value = value .. " " .. charges
+    color = worst(color, charges < RED_CHARGES and "red" or (charges < YELLOW_CHARGES and "yellow" or "white"))
+  end
+  local name = data.enchantNames[b.enchantID] or "Buff"
+  return { key = entry.key, label = entry.label .. " " .. name, value = value, color = color }
+end
+
 function Logic.BuildLines(data, snapshot, settings)
   local lines = {}
   local class = data.classes[snapshot.class]
@@ -77,7 +106,7 @@ function Logic.BuildLines(data, snapshot, settings)
     if Logic.EntryStatus(entry, snapshot) == "active" and Logic.IsEnabled(snapshot.class, entry, settings, data) then
       local line
       if entry.kind == "weapon" then
-        line = Logic.WeaponLine and Logic.WeaponLine(entry, snapshot.weapons[entry.slot], data)
+        line = Logic.WeaponLine(entry, snapshot.weapons[entry.slot], data)
       else
         line = Logic.ItemLine(entry, snapshot)
       end
