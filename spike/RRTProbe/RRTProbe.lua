@@ -213,7 +213,7 @@ local function probe()
   print("|cff88ccff[RRT]|r saved run #" .. #RRTProbeDB.runs .. " (" .. #out .. " lines). Type /reload later to write it to disk.")
 end
 
-SLASH_RRTPROBE1 = "/rrt"
+SLASH_RRTPROBE1 = "/rrtprobe"
 SlashCmdList.RRTPROBE = function(msg)
   if msg == "probe" then probe()
   elseif msg == "clear" then RRTProbeDB.runs = {}; print("[RRT] cleared")
