@@ -24,3 +24,9 @@ install: ## Link the addon into the local WoW Forever AddOns folder
 
 uninstall: ## Remove that link (only if it is a symlink)
 	@if [ -L "$(WOW_ADDONS)/$(ADDON)" ]; then rm "$(WOW_ADDONS)/$(ADDON)" && echo removed; else echo "not a symlink, left alone"; fi
+
+package: check ## Build release/ReagentTracker-<version>.zip (the installable addon)
+	@mkdir -p release
+	@rm -f "release/$(ADDON)-$(VERSION).zip"
+	zip -qrX "release/$(ADDON)-$(VERSION).zip" $(ADDON) -x '*.DS_Store'
+	@unzip -l "release/$(ADDON)-$(VERSION).zip"
