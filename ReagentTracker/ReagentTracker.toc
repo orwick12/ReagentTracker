@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: Reagent Tracker
+## Notes: Minimal text tracker for weapon poisons/buffs and class reagents. /rrt for options.
+## Version: 0.1.0
+## SavedVariables: ReagentTrackerDB
+
+Data.lua
+Logic.lua
+Core.lua

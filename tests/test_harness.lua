@@ -1,0 +1,15 @@
+test("eq deep-compares tables", function()
+  eq({ a = { 1, 2 }, b = "x" }, { a = { 1, 2 }, b = "x" })
+end)
+
+test("harness reports failure", function()
+  ok(not pcall(eq, 1, 2), "eq(1, 2) should raise")
+  ok(not pcall(eq, { a = 1 }, { a = 1, b = 2 }), "extra key should raise")
+  ok(not pcall(ok, false, "x"), "ok(false) should raise")
+end)
+
+test("load_addon returns a fresh namespace each call", function()
+  local a = load_addon("Data.lua")
+  local b = load_addon("Data.lua")
+  ok(a ~= b, "namespaces should differ")
+end)
